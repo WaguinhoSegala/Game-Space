@@ -13,7 +13,7 @@ icone = pygame.image.load("assets/icone.png")
 pygame.display.set_icon(icone)
 
 branco = (255, 255, 255)
-preto = (0, 0, 0)
+
 
 estrelas = carregar_marcacoes()
 
@@ -45,13 +45,17 @@ while True:
     tela.fill(branco)
     tela.blit(fundo, (0, 0))
 
-    for i, (pos, nome) in enumerate(estrelas.items()):
-        pygame.draw.circle(tela, branco, pos, 5, 0)
+  
+    estrelas_ordenadas = sorted(estrelas.items(), key=lambda item: item[0])
+
+    for i, ((x1, y1), nome1) in enumerate(estrelas_ordenadas):
+        pygame.draw.circle(tela, branco, (x1, y1), 5, 0)
         fonte = pygame.font.Font(None, 24)
-        texto = fonte.render(nome, True, branco)
-        tela.blit(texto, (pos[0] + 10, pos[1] - 10))
+        texto = fonte.render(nome1, True, branco)
+        tela.blit(texto, (x1 + 10, y1 - 10))
         if i > 0:
-            pygame.draw.line(tela, branco, list(estrelas.keys())[i - 1], pos, 1)
+            (x0, y0), nome0 = estrelas_ordenadas[i - 1]
+            pygame.draw.line(tela, branco, (x0, y0), (x1, y1), 1)
 
     fonte = pygame.font.SysFont("comicsans", 14)
     texto = fonte.render("Pressione F10 para Salvar os pontos", True, branco)
